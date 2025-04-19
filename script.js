@@ -1,13 +1,13 @@
 const button = document.getElementById('runner');
 const audio = document.getElementById('bg-music');
 
-// Áudios diferentes para cada clique
+// Áudios diferentes para cada clique com os novos nomes
 const clickAudios = [
-  new Audio('audio1.mp3'), // Primeiro áudio
-  new Audio('audio2.mp3'), // Segundo áudio
-  new Audio('audio3.mp3'), // Terceiro áudio
-  new Audio('audio4.mp3'), // Quarto áudio
-  new Audio('audio5.mp3')  // Quinto áudio
+  new Audio('valorant-1-kill.mp3'), // Primeiro áudio
+  new Audio('valorant-2-kills.mp3'), // Segundo áudio
+  new Audio('valorant-3-kills.mp3'), // Terceiro áudio
+  new Audio('valorant-4-kills.mp3'), // Quarto áudio
+  new Audio('valorant-5-kills.mp3')  // Quinto áudio
 ];
 
 const victoryText = document.getElementById('victory-text');
