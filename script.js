@@ -1,5 +1,5 @@
 const button = document.getElementById('runner');
-const audio = document.getElementById('bg-music');
+const audio = document.getElementById('ESQV');
 
 let clickCount = 0;
 let isMovingSideToSide = false;
