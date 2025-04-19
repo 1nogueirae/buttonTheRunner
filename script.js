@@ -1,45 +1,49 @@
-let clickCount = 0; // Contador de cliques
-let isMovingSideToSide = false; // Flag para controlar se o botão deve se mover lateralmente
+const button = document.getElementById('runner');
+const audio = document.getElementById('bg-music');
 
-// Função para movimentação lateral
-function moveSideToSide() {
-  let button = document.getElementById('runner');
-  let screenWidth = window.innerWidth;
-  let direction = 1; // 1 para direita, -1 para esquerda
-  let step = 5; // Passo de movimento (quanto maior, mais rápido)
+let clickCount = 0;
+let isMovingSideToSide = false;
+let musicStarted = false;
+let direction = 1;
+let posX = 0;
 
-  // Movimento lateral constante
-  setInterval(function() {
-    let currentPosition = parseFloat(button.style.left || 0);
-    
-    // Se o botão chegar nas extremidades da tela, inverte a direção
-    if (currentPosition >= screenWidth - button.offsetWidth || currentPosition <= 0) {
-      direction *= -1; // Troca direção
-    }
+button.addEventListener('click', () => {
+  clickCount++;
 
-    // Move o botão
-    button.style.position = 'absolute';
-    button.style.left = (currentPosition + step * direction) + 'px';
-  }, 10); // Executa a cada 10ms para suavizar o movimento
-}
-
-// Adiciona o evento de clique no botão
-document.getElementById('runner').addEventListener('click', function() {
-  clickCount++; // Aumenta o contador de cliques
+  // Inicia a música no primeiro clique
+  if (!musicStarted) {
+    audio.play();
+    musicStarted = true;
+  }
 
   if (clickCount >= 5 && !isMovingSideToSide) {
-    isMovingSideToSide = true; // Marca que o movimento lateral vai começar
-    moveSideToSide(); // Inicia o movimento lateral
+    isMovingSideToSide = true;
+    moveSideToSide();
   } else {
-    // Movimento aleatório antes de 5 cliques
+    // Movimento aleatório nos primeiros 5 cliques
     let screenWidth = window.innerWidth;
     let screenHeight = window.innerHeight;
 
-    let randomX = Math.random() * (screenWidth - this.offsetWidth);
-    let randomY = Math.random() * (screenHeight - this.offsetHeight);
+    let randomX = Math.random() * (screenWidth - button.offsetWidth);
+    let randomY = Math.random() * (screenHeight - button.offsetHeight);
 
-    this.style.position = 'absolute';
-    this.style.left = `${randomX}px`;
-    this.style.top = `${randomY}px`;
+    button.style.position = 'absolute';
+    button.style.left = `${randomX}px`;
+    button.style.top = `${randomY}px`;
   }
 });
+
+// Movimento lateral contínuo depois do quinto clique
+function moveSideToSide() {
+  setInterval(() => {
+    posX += direction * 2;
+
+    // muda direção ao bater na borda
+    if (posX <= 0 || posX >= window.innerWidth - button.offsetWidth) {
+      direction *= -1;
+    }
+
+    button.style.position = 'absolute';
+    button.style.left = `${posX}px`;
+  }, 10); // velocidade do movimento (menor = mais rápido)
+}
