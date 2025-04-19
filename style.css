@@ -6,22 +6,23 @@
 
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
-  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinha o conteúdo no topo */
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  height: 100vh;
   background-color: #f7f7f7;
+  text-align: center;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem; /* Tamanho maior para o título */
+  margin-top: 20px; /* Margem superior para afastar um pouco do topo */
 }
 
 p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+  font-size: 1.2rem; /* Fonte menor para o parágrafo */
+  margin-top: 10px; /* Espaçamento entre o título e o parágrafo */
 }
 
 button {
@@ -32,6 +33,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px; /* Espaçamento entre o parágrafo e o botão */
   transition: background-color 0.3s ease;
 }
 
