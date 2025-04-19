@@ -11,27 +11,23 @@ let dirX = 1;
 let dirY = 1;
 let speed = 1;
 
+// Aguardar primeiro clique
 button.addEventListener('click', () => {
-  clickCount++;
+  if (clickCount === 0) {
+    clickCount++;
+    
+    // Toca a música no primeiro clique
+    if (!musicStarted) {
+      audio.play();
+      musicStarted = true;
+    }
 
-  // Inicia a música no primeiro clique
-  if (!musicStarted) {
-    audio.play();
-    musicStarted = true;
-  }
-
-  // Aumenta velocidade a cada 2 cliques após o 5º
-  if (clickCount > 5 && (clickCount - 5) % 2 === 0) {
-    speed += 0.5;
-  }
-
-  // Sempre muda pra posição aleatória ao clicar — mesmo em movimento
-  moveToRandomPosition();
-
-  // Inicia o movimento se for o quinto clique
-  if (clickCount === 5 && !isMoving) {
+    // Inicia o movimento diagonal
     isMoving = true;
     moveDiagonal();
+    
+    // Muda a posição inicial aleatória
+    moveToRandomPosition();
   }
 });
 
@@ -57,6 +53,7 @@ function moveDiagonal() {
     posX += dirX * speed;
     posY += dirY * speed;
 
+    // Colisão com borda da tela
     if (posX <= 0 || posX >= screenWidth - button.offsetWidth) dirX *= -1;
     if (posY <= 0 || posY >= screenHeight - button.offsetHeight) dirY *= -1;
 
@@ -64,3 +61,10 @@ function moveDiagonal() {
     button.style.top = `${posY}px`;
   }, 10);
 }
+
+// A partir do segundo clique, movimento com mouse
+button.addEventListener('mouseover', () => {
+  if (clickCount > 0) {
+    moveToRandomPosition(); // Muda a posição ao passar o mouse
+  }
+});
