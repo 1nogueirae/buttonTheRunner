@@ -1,6 +1,16 @@
 const button = document.getElementById('runner');
 const audio = document.getElementById('bg-music');
 
+// Áudios diferentes para cada clique
+const clickAudios = [
+  new Audio('audio1.mp3'), // Primeiro áudio
+  new Audio('audio2.mp3'), // Segundo áudio
+  new Audio('audio3.mp3'), // Terceiro áudio
+  new Audio('audio4.mp3'), // Quarto áudio
+  new Audio('audio5.mp3')  // Quinto áudio
+];
+
+const victoryText = document.getElementById('victory-text');
 let clickCount = 0;
 let musicStarted = false;
 let isMoving = false;
@@ -10,12 +20,18 @@ let posY = 0;
 let dirX = 1;
 let dirY = 1;
 let speed = 1;
+let hoverTimeout; // Para controlar o tempo de hover
+
+// Adicionando o texto de vitória à tela, inicialmente escondido
+victoryText.style.display = 'none';
 
 // Aguardar primeiro clique
 button.addEventListener('click', () => {
-  if (clickCount === 0) {
+  if (clickCount < 5) {
+    clickAudios[clickCount].play(); // Toca o áudio correspondente ao clique
+
     clickCount++;
-    
+
     // Toca a música no primeiro clique
     if (!musicStarted) {
       audio.play();
@@ -23,11 +39,26 @@ button.addEventListener('click', () => {
     }
 
     // Inicia o movimento diagonal
-    isMoving = true;
-    moveDiagonal();
-    
-    // Muda a posição inicial aleatória
-    moveToRandomPosition();
+    if (clickCount === 1) {
+      isMoving = true;
+      moveDiagonal();
+      moveToRandomPosition();
+    }
+
+    // Caso o usuário clique dentro de 1 segundo após o hover
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout); // Limpa o timeout se o usuário clicou a tempo
+    }
+
+    // Se o jogador clicar 5 vezes corretamente
+    if (clickCount === 5) {
+      setTimeout(() => {
+        // Limpa a tela
+        document.body.innerHTML = '';
+        victoryText.style.display = 'block'; // Mostra o texto de vitória
+        startVictoryAnimation(); // Começa a animação do texto
+      }, 1000); // Atraso para garantir que o último áudio tenha tocado
+    }
   }
 });
 
@@ -65,6 +96,18 @@ function moveDiagonal() {
 // A partir do segundo clique, movimento com mouse
 button.addEventListener('mouseover', () => {
   if (clickCount > 0) {
-    moveToRandomPosition(); // Muda a posição ao passar o mouse
+    // Se o usuário passar o cursor por cima, começa a contagem do tempo
+    hoverTimeout = setTimeout(() => {
+      moveToRandomPosition(); // Muda a posição após 1 segundo
+    }, 1000); // Tempo de 1 segundo
   }
 });
+
+// Função para animação de "Victory"
+function startVictoryAnimation() {
+  let blinkState = true;
+  setInterval(() => {
+    victoryText.style.visibility = blinkState ? 'visible' : 'hidden';
+    blinkState = !blinkState;
+  }, 500); // Piscar a cada 500ms
+}
