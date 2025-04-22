@@ -27,6 +27,7 @@ victoryText.style.display = 'none';
 
 // Aguardar primeiro clique
 button.addEventListener('click', () => {
+  console.log('Botão clicado');
   if (clickCount < 5) {
     clickAudios[clickCount].play(); // Toca o áudio correspondente ao clique
 
