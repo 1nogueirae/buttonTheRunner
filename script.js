@@ -22,8 +22,13 @@ let dirY = 1;
 let speed = 1;
 let hoverTimeout; // Para controlar o tempo de hover
 
-// Adicionando o texto de vitória à tela, inicialmente escondido
-victoryText.style.display = 'none';
+// Iniciar movimento aleatório imediatamente
+window.addEventListener('load', () => {
+  isMoving = true;
+  moveToRandomPosition();
+  moveDiagonal();
+  startRandomMovement();
+});
 
 // Aguardar primeiro clique
 button.addEventListener('click', () => {
@@ -32,19 +37,6 @@ button.addEventListener('click', () => {
     clickAudios[clickCount].play(); // Toca o áudio correspondente ao clique
 
     clickCount++;
-
-    // Toca a música no primeiro clique
-    if (!musicStarted) {
-      audio.play();
-      musicStarted = true;
-    }
-
-    // Inicia o movimento diagonal
-    if (clickCount === 1) {
-      isMoving = true;
-      moveDiagonal();
-      moveToRandomPosition();
-    }
 
     // Caso o usuário clique dentro de 1 segundo após o hover
     if (hoverTimeout) {
@@ -100,9 +92,16 @@ button.addEventListener('mouseover', () => {
     // Se o usuário passar o cursor por cima, começa a contagem do tempo
     hoverTimeout = setTimeout(() => {
       moveToRandomPosition(); // Muda a posição após 1 segundo
-    }, 1000); // Tempo de 1 segundo
+    }, 200); // Tempo de 1 segundo
   }
 });
+
+// Função para movimento aleatório contínuo
+function startRandomMovement() {
+  setInterval(() => {
+    moveToRandomPosition();
+  }, 2000); // Move para uma posição aleatória a cada 2 segundos
+}
 
 // Função para animação de "Victory"
 function startVictoryAnimation() {
